@@ -19,7 +19,7 @@ class Form(StatesGroup):
 async def cmd_start(m: Message, state: FSMContext) -> None:
     await state.clear()
 
-    await m.answer(f"👻 привет, {html.bold(html.quote(m.from_user.first_name))}!"
+    await m.answer(f"👻 привет, {html.bold(html.quote(m.from_user.first_name)).lower()}!"
                    f" 👻 \n🌤️ я <b>погодный</b> бот от <b>@takilow</b>\n\n"
                    f"я могу узнать <b>погоду</b> на <b>завтра</b>, <b>сегодня</b>\n"
                    f"<b>и даже на 8 дней!</b> 😎\n\n"
