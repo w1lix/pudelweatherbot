@@ -14,12 +14,15 @@ from tools.rework_dict import rework_now
 router = Router()
 bot = Bot(token=BOT_TOKEN)
 
+days = ["понедельник", "вторник", "среда",
+        "четверг", "пятница", "суббота", "воскресенье", "понедельник"]
+
 
 # текущая погода
 @router.message(Form.request_city_now, F.content_type.in_({'text', 'location'}))
 async def tomorrow(m: Message, state: FSMContext) -> None:
     try:
-        weekday = datetime.today().weekday() + 1
+        weekday = datetime.today().weekday()
 
         await bot.send_chat_action(m.chat.id, 'typing')
 
@@ -37,7 +40,7 @@ async def tomorrow(m: Message, state: FSMContext) -> None:
             reply_markup=reply_keyboard_main())
 
         await m.reply(
-            f"⭐️ <b>текущая погода</b> <b>| {re_data['temp']}°:</b>\n\n"
+            f"⭐️ {days[weekday]}, текущая погода <b>| {re_data['temp']}°:</b>\n\n"
             f"🏙 <b>температура:</b> {re_data['temp']}°\n"
             f"🌇 <b>ощущается как:</b> {re_data['feels_like']}°\n\n"
             f"🌺 <b>рассвет: </b>{re_data['sunrise'].strftime('%H:%M')}\n"
