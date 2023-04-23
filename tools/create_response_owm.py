@@ -1,3 +1,5 @@
+from typing import Tuple, List, Any
+
 import requests
 from aiohttp import ClientSession
 
@@ -5,16 +7,15 @@ from config import API_KEY
 
 
 # получение координат
-async def get_coord(city_name: str) -> list:
+async def get_data_first(city_name: str):
     async with ClientSession() as session:
         url = f'https://api.openweathermap.org/data/2.5/weather?&lang=ru&q={city_name}&appid={API_KEY}&units=metric'
         async with session.get(url, timeout=10) as response:
             req = await response.json()
-
             lat = req['coord']['lat']
             lon = req['coord']['lon']
 
-            return [lat, lon]
+            return [lat, lon], req
 
 
 # получение json на завтрашнюю погоду

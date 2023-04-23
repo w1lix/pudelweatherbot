@@ -1,4 +1,5 @@
 from datetime import datetime
+from pprint import pprint
 
 from aiogram import Bot, Router, F
 from aiogram.fsm.context import FSMContext
@@ -8,7 +9,7 @@ from config import BOT_TOKEN
 from handlers.commands import Form
 from keyboards.inline import to_detail_t, to_main_t
 from keyboards.reply import reply_keyboard_main
-from tools.create_response_owm import get_coord, get_data_tomorrow
+from tools.create_response_owm import get_data_first, get_data_tomorrow
 from tools.rework_dict import rework_forecast
 
 days = ["понедельник", "вторник", "среда",
@@ -23,15 +24,16 @@ async def tomorrow(m: Message, state: FSMContext) -> None:
     weekday = datetime.today().weekday() + 1
 
     await bot.send_chat_action(m.chat.id, 'typing')
-
     # проверка, является ли сообщение локацией
     if not m.location:
-        data = await get_data_tomorrow(await get_coord(m.text))
-        re_data = rework_forecast(data)
+        data_first = await get_data_first(m.text)
+        data = await get_data_tomorrow(data_first[0])
+        re_data = rework_forecast(data, data_first[1])
     else:
+        data_first = await get_data_first(m.text)
         data = await get_data_tomorrow(  # получение json погоды на завтра
             [m.location.latitude, m.location.longitude])
-        re_data = rework_forecast(data)  # переделывание словаря
+        re_data = rework_forecast(data, data_first[1])  # переделывание словаря
 
     await m.answer_sticker(
         r"CAACAgIAAxkBAAEFxwRjGK96VU-SA-5NEkRlbKWVxzIDrgAC3AkAApek8EpUZ7lMIqYlaSkE",

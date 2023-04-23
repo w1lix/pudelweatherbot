@@ -8,7 +8,7 @@ from config import BOT_TOKEN
 from handlers.commands import Form
 from keyboards.inline import to_detail_now, to_main_now
 from keyboards.reply import reply_keyboard_main
-from tools.create_response_owm import get_data_now, get_coord
+from tools.create_response_owm import get_data_now, get_data_first
 from tools.rework_dict import rework_now
 
 router = Router()
@@ -28,7 +28,7 @@ async def tomorrow(m: Message, state: FSMContext) -> None:
 
         # проверка, является ли сообщение локацией
         if not m.location:
-            data = await get_data_now(await get_coord(m.text))
+            data = await get_data_now(await get_data_first(m.text))
             re_data = rework_now(data)
         else:
             data = await get_data_now(  # получение json погоды на сегодня

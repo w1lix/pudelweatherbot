@@ -3,7 +3,7 @@ from tools.degrees_to_direction import degrees_to_direction
 
 
 # переделывание словаря завтрашнего прогноза
-def rework_forecast(data: dict) -> dict:
+def rework_forecast(data: dict, data_first: dict) -> dict:
     # основные данные с температурами
     eve = round(data['temp']['eve'])
     morn = round(data['temp']['morn'])
@@ -19,8 +19,9 @@ def rework_forecast(data: dict) -> dict:
     temp_max = round(data['temp']['max'])
 
     # восход, рассвет, световой день
-    sunrise = datetime.fromtimestamp(data['sunrise']) + timedelta(hours=5)  # для деплоя на railway (timezone)
-    sunset = datetime.fromtimestamp(data['sunset']) + timedelta(hours=5)  # для деплоя на railway (timezone)
+    timezone = data_first['timezone']
+    sunrise = datetime.fromtimestamp(data['sunrise'] + timezone)
+    sunset = datetime.fromtimestamp(data['sunset'] + timezone)
     ldr = str(sunset - sunrise)[:-3].split(":")  # [:-3] - обрезает H:M:S до H:M
 
     # описание
@@ -55,17 +56,17 @@ def rework_forecast(data: dict) -> dict:
 
 
 # переделывание словаря текущей погоды
-def rework_now(data: dict) -> dict:
+def rework_now(data: dict, data_first: dict) -> dict:
     # основные данные с температурами
     temp = round(data['temp'])
     feels_like = round(data['feels_like'])
-
     # описание
     descr = data['weather'][0]['description']
 
     # восход, рассвет, световой день
-    sunrise = datetime.fromtimestamp(data['sunrise']) + timedelta(hours=5)  # для деплоя на railway (timezone)
-    sunset = datetime.fromtimestamp(data['sunset']) + timedelta(hours=5)  # для деплоя на railway (timezone)
+    timezone = data_first['timezone']
+    sunrise = datetime.fromtimestamp(data['sunrise'] + timezone)
+    sunset = datetime.fromtimestamp(data['sunset'] + timezone)
     ldr = str(sunset - sunrise)[:-3].split(":")  # [:-3] - обрезает H:M:S до H:M
 
     # оставшиеся данные
