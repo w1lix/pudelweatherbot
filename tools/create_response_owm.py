@@ -1,6 +1,3 @@
-from typing import Tuple, List, Any
-
-import requests
 from aiohttp import ClientSession
 
 from config import API_KEY

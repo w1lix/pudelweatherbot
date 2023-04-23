@@ -28,12 +28,14 @@ async def tomorrow(m: Message, state: FSMContext) -> None:
 
         # проверка, является ли сообщение локацией
         if not m.location:
-            data = await get_data_now(await get_data_first(m.text))
-            re_data = rework_now(data)
+            data_first = await get_data_first(m.text)
+            data = await get_data_now(data_first[0])
+            re_data = rework_now(data, data_first[1])
         else:
-            data = await get_data_now(  # получение json погоды на сегодня
+            data_first = await get_data_first(m.text)
+            data = await get_data_now(  # получение json погоды на завтра
                 [m.location.latitude, m.location.longitude])
-            re_data = rework_now(data)  # переделывание словаря
+            re_data = rework_now(data, data_first[1])  # переделывание словаря
 
         await m.answer_sticker(
             r"CAACAgIAAxkBAAEFxwRjGK96VU-SA-5NEkRlbKWVxzIDrgAC3AkAApek8EpUZ7lMIqYlaSkE",
