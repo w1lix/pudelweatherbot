@@ -20,8 +20,8 @@ def rework_forecast(data: dict) -> dict:
     temp_max = round(data['temp']['max'])
 
     # восход, рассвет, световой день
-    sunrise = datetime.fromtimestamp(data['sunrise'])
-    sunset = datetime.fromtimestamp(data['sunset'])
+    sunrise = datetime.fromtimestamp(data['sunrise']) + 5  # +5 - для деплоя на railway (timezone)
+    sunset = datetime.fromtimestamp(data['sunset']) + 5 # +5 - для деплоя на railway (timezone)
     ldr = str(sunset - sunrise)[:-3].split(":")  # [:-3] - обрезает H:M:S до H:M
 
     # описание
