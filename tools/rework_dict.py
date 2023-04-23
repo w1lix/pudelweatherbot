@@ -19,8 +19,8 @@ def rework_forecast(data: dict) -> dict:
     temp_max = round(data['temp']['max'])
 
     # восход, рассвет, световой день
-    sunrise = datetime.fromtimestamp(data['sunrise'])
-    sunset = datetime.fromtimestamp(data['sunset'])
+    sunrise = datetime.fromtimestamp(data['sunrise']) + timedelta(hours=3)  # для деплоя на railway (timezone)
+    sunset = datetime.fromtimestamp(data['sunset']) + timedelta(hours=3)  # для деплоя на railway (timezone)
     ldr = str(sunset - sunrise)[:-3].split(":")  # [:-3] - обрезает H:M:S до H:M
 
     # описание
@@ -64,8 +64,8 @@ def rework_now(data: dict) -> dict:
     descr = data['weather'][0]['description']
 
     # восход, рассвет, световой день
-    sunrise = datetime.fromtimestamp(data['sunrise'])
-    sunset = datetime.fromtimestamp(data['sunset'])
+    sunrise = datetime.fromtimestamp(data['sunrise']) + timedelta(hours=3)  # для деплоя на railway (timezone)
+    sunset = datetime.fromtimestamp(data['sunset']) + timedelta(hours=3)  # для деплоя на railway (timezone)
     ldr = str(sunset - sunrise)[:-3].split(":")  # [:-3] - обрезает H:M:S до H:M
 
     # оставшиеся данные
