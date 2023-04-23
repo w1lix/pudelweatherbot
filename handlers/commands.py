@@ -34,8 +34,12 @@ async def cmd_start(m: Message, state: FSMContext) -> None:
 async def request_the_city_now(m: Message, state: FSMContext) -> None:
     await state.clear()
 
-    await m.reply("<b>🗺 отправьте геопозицию</b> или \n"
-                  "<b>🦋 введите город</b>: ", reply_markup=reply_keyboard_send_location())
+    if m.chat.type in ['group', 'supergroup']:
+        await m.reply("😞 бот не может запрашивать геопозицию в группе, поэтому,\n"
+                      "🦋 <b>отправьте вручную</b>, или <b>введите город</b>:", reply_markup=reply_keyboard_main())
+    else:
+        await m.reply("<b>🗺 отправьте геопозицию</b> или \n"
+                      "<b>🦋 введите город</b>: ", reply_markup=reply_keyboard_send_location())
 
     await state.set_state(Form.request_city_now)
 
@@ -45,8 +49,12 @@ async def request_the_city_now(m: Message, state: FSMContext) -> None:
 async def request_the_city_tomorrow(m: Message, state: FSMContext) -> None:
     await state.clear()
 
-    await m.reply("<b>🗺 отправьте геопозицию</b> или \n"
-                  "<b>🦋 введите город</b>: ", reply_markup=reply_keyboard_send_location())
+    if m.chat.type in ['group', 'supergroup']:
+        await m.reply("😞 бот не может запрашивать геопозицию в группе, поэтому,\n"
+                      "🦋 <b>отправьте вручную</b>, или <b>введите город</b>:", reply_markup=reply_keyboard_main())
+    else:
+        await m.reply("<b>🗺 отправьте геопозицию</b> или \n"
+                      "<b>🦋 введите город</b>: ", reply_markup=reply_keyboard_send_location())
 
     await state.set_state(Form.request_city_tomorrow)
 
